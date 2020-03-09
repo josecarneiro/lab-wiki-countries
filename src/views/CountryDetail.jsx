@@ -28,19 +28,15 @@ export default class CountryDetail extends Component {
     });
   }
   render() {
-    console.log(this.state.singleCountry);
+    // console.log(this.state.singleCountry);
     const singleCountry = this.state.singleCountry;
 
     return (
       <div className="row">
-        <div className="col-5">
+        <div className="col-5 modal-body">
           <div className="listGroup">
             {countries.map((item, i) => (
-              <Link
-                key={i}
-                className="list-group-item list-group-item-action active"
-                to={item.cca3}
-              >
+              <Link key={i} className="list-group-item list-group-item-action" to={item.cca3}>
                 {item.name.common}
               </Link>
             ))}
@@ -66,15 +62,21 @@ export default class CountryDetail extends Component {
                 </li>
               ))}
             </ul>
-            <h6>Translation of Country Common name to:</h6>
+
+            <h5>Translation of Country Common name to:</h5>
             <ul>
-              {singleCountry.borders.map((x, i) => (
-                <li key={i}>
-                  <Link to={x}>{countries.find(item => item.cca3 === x).name.common}</Link>
-                  {/* <p>Offical: {x[official]}</p>
-                  <p>Common: {x[common]}</p> */}
-                </li>
-              ))}
+              {Object.keys(singleCountry.translations).map((keyCountry, i) =>
+                Object.values(singleCountry.translations).map(
+                  (valueCountry, h) =>
+                    i === h && (
+                      <li key={i}>
+                        <h6>{keyCountry}</h6>
+                        <p>Offical name: {valueCountry.official}</p>
+                        <p>Common name: {valueCountry.common}</p>
+                      </li>
+                    )
+                )
+              )}
             </ul>
           </div>
         )) ||
