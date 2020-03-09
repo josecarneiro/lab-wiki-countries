@@ -1,3 +1,7 @@
+body {
+  max-height: 100vh;
+}
+
 .App p {
   text-align: center;
 }
