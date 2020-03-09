@@ -52,11 +52,12 @@ console.log(countrie)
                 <td>Borders</td>
                 <td>
                   <ul>
-                  {for (let i; i<countrie.border.length; i++){
-                    return <li>
-                      <a href=`/${countrie.cca2}`>{countrie.name.official}</a>
+                  {countrie.borders.map(item =>(
+                    <li>
+                      <a href={`/${item.cca2}`}> {item.name.official} </a>
                     </li>
-                  }}
+
+                  ))}
                     <li>
                       <a href="/AND">Andorra</a>
                     </li>
