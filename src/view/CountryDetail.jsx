@@ -1,51 +1,82 @@
-import React, { Component } from 'react'
-import countries from "./../../src/countries.json"
-import { Link, Route } from "react-router-dom"
+import React, { Component } from 'react';
+import Data from '../countries.json';
+import { Link } from 'react-router-dom';
 
-
-
-class CountryPage extends Component {
+export class CountryDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      country: null
+      name: '',
+      capital: '',
+      area: '',
+      borders: []
     };
+    this.fetchData = this.fetchData.bind(this);
+  }
+
+  fetchData() {
+    const contr = this.props.match.params.country;
+    console.log(contr);
+    Data.map(country => {
+      if (country.cca3 === contr) {
+        this.setState({
+          name: country.name.common,
+          capital: country.capital,
+          area: country.area,
+          borders: country.borders
+        });
+      }
+    });
   }
 
   componentDidMount() {
     this.fetchData();
-    console.log(countries);
   }
 
-  // componentDidUpdate(previousProps, previousState) {
-  //   const countryChanged = previousProps.name.common !== this.props.name.common;
-  //   if (countryChanged) {
-  //     this.fetchData();   /// resolveu a mudança de um perfil para o outro.
-  //   }
-  // }
+  convertToCountry(abriviation) {
+    const country = Data.find(country => country.cca3 === abriviation);
+    if (!country) return;
+    return country.name.common;
+  }
 
-  fetchData() {
-    const name = this.props.name;
-    const country = countries.find(item => item.name.common === name);
-    this.setState({
-      country
-    });
+  componentDidUpdate(prevProp, prevState, snapshot) {
+    const prevParam = prevProp.match.params.country;
+    const actParam = this.props.match.params.country;
+    if (actParam !== prevParam) {
+      this.fetchData();
+    }
   }
 
   render() {
-    const country = this.state.country;
-    console.log(country)
-
     return (
-      (country && (
+      <div className="col-4">
+        <h1>{this.state.name}</h1>
+        <hr></hr>
         <div>
-          <Link to={`/${country.cca3}`}>{country.name.common} <img src={`https://www.countryflags.io/${country.cca2}/flat/64.png`} /></Link >
-          <Route path={`/:${country.cca3}`} component={CountryPage} exact />
+          <h4 className="pb-3">Capital</h4>
+          <p>{this.state.capital}</p>
         </div>
-      )) ||
-      ""
-    )
+        <hr></hr>
+        <div>
+          <h4 className="pb-3">Area</h4>
+          <p>{this.state.area}</p>
+        </div>
+        <div>
+          <hr></hr>
+          <h4 className="pb-3">Borders</h4>
+          <ul>
+            {this.state.borders.map(country => {
+              return (
+                <li key={country}>
+                  <Link to={`/${country}`}>{this.convertToCountry(country)}</Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
+    );
   }
 }
 
-export default CountryPage;
+export default CountryDetails;
