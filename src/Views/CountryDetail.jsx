@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Data from '../countries.json';
 import { Link } from 'react-router-dom';
 
-export class CountryDetails extends Component {
+class CountryDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,7 +11,7 @@ export class CountryDetails extends Component {
       area: '',
       borders: []
     };
-    this.fetchData = this.fetchData.bind(this);
+    // this.fetchData = this.fetchData.bind(this);
   }
 
   fetchData() {
@@ -39,7 +39,7 @@ export class CountryDetails extends Component {
     return country.name.common;
   }
 
-  componentDidUpdate(prevProp, prevState, snapshot) {
+  componentDidUpdate(prevProp, prevState) {
     const prevParam = prevProp.match.params.country;
     const actParam = this.props.match.params.country;
     if (actParam !== prevParam) {
