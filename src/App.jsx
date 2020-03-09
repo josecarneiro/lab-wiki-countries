@@ -16,16 +16,15 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+
+        
       <BrowserRouter>
-        
-        
           <Switch>
             <Route path="/:name"
             component={infoCountry} exact />
 
             <Route path="/"
             component={home} exact />
-
           </Switch>
           
         

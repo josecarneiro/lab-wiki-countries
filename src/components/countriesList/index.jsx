@@ -15,7 +15,8 @@ export default class countriesList extends Component {
     return (
           countriesArray.map(country => {
             return (
-            <Link key={country.name.common} to={country.cca3}>
+            
+            <Link className="list-group-item list-group-item-action" key={country.name.common} to={country.cca3}>
               <p>{country.name.common}</p>
             </Link>
 
