@@ -1,47 +1,45 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 import './App.css';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Row, Col, ListGroup, Navbar } from 'react-bootstrap';
 import CountryDetail from './views/CountryDetail';
 import allCountries from './countries.json';
-
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <nav class="navbar navbar-dark bg-primary mb-3">
-          <div class="container">
-            <a class="navbar-brand" href="/">
-              WikiCountries
-            </a>
-          </div>
-        </nav>
+      <div className="App" style={{ height: '100%' }}>
         <BrowserRouter>
-          <div class="container">
-            <div class="row">
-              <div class="col-5">
-                <div class="list-group">
-                  {allCountries.map(country => (
-                    <Link class="list-group-item list-group-item-action" to={country.cca3}>
-                      {' '}
+          <Navbar bg="primary">
+            <Link to="/">
+              <Navbar.Brand className="text-light">WikiCountries</Navbar.Brand>
+            </Link>
+          </Navbar>
+          <Row style={{ maxHeight: '100vh' }}>
+            <Col xs={5}>
+              <ListGroup>
+                {allCountries.map(country => (
+                  <Link to={`/${country.cca3}`}>
+                    <ListGroup.Item>
                       <img
-                        class="flag-img"
+                        style={{ width: '25px' }}
                         src={`https://www.countryflags.io/${country.cca2}/flat/64.png`}
-                        alt="Flag"
-                      />
-                      {country.name.official}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-          <Switch>
-            <Route path="/:name" exact component={CountryDetail} />
-          </Switch>
+                        alt={country.name.common}
+                      />{' '}
+                      {country.name.common}
+                    </ListGroup.Item>
+                  </Link>
+                ))}
+                ;
+              </ListGroup>
+            </Col>
+            <Col>
+              <Route path="/:cca3" component={CountryDetail} exact />
+            </Col>
+          </Row>
         </BrowserRouter>
       </div>
     );
   }
 }
-
 export default App;
