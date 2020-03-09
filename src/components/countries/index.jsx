@@ -8,7 +8,7 @@ export class index extends Component {
   
     return (
       <div>
-      <Link className="list-group-item list-group-item-action" to={`/${countrie.cca2}`} >
+      <Link className="list-group-item list-group-item-action" to={`/${countrie.cca3}`} >
       
       <h5>{countrie.flag}</h5> <h5 >{countrie.name.official}</h5>
       </Link> 

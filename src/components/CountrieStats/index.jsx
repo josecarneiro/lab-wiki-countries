@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import listOfCountries from './../../countries.json';
+import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 class CountrieStats extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +13,6 @@ class CountrieStats extends Component {
   }
 
   componentDidUpdate(previousProps, previousState) {
-    
     const countrieChanged = previousProps.match.params.name !== this.props.match.params.name;
     if (countrieChanged) {
       this.fetchData();
@@ -20,16 +20,21 @@ class CountrieStats extends Component {
   }
 
   fetchData() {
-    const cca2 = this.props.match.params.name;
-    const countrie = listOfCountries.find(item => item.cca2 === cca2);
+    const cca3 = this.props.match.params.name;
+    const countrie = listOfCountries.find(item => item.cca3 === cca3);
     this.setState({
       countrie
     });
   }
+  convertToCountry(abriviation) {
+    const countrie = listOfCountries.find(country => country.cca3 === abriviation);
+    if (!countrie) return;
+    return countrie.name.common;
+  }
 
   render() {
     const countrie = this.state.countrie;
-console.log(countrie)
+    console.log(countrie);
     return (
       (countrie && (
         <div>
@@ -44,7 +49,7 @@ console.log(countrie)
               <tr>
                 <td>Area</td>
                 <td>
-                {countrie.area} km
+                  {countrie.area} km
                   <sup>2</sup>
                 </td>
               </tr>
@@ -52,36 +57,11 @@ console.log(countrie)
                 <td>Borders</td>
                 <td>
                   <ul>
-                  {countrie.borders.map(item =>(
-                    <li>
-                      <a href={`/${item.cca2}`}> {item.name.official} </a>
-                    </li>
-
-                  ))}
-                    <li>
-                      <a href="/AND">Andorra</a>
-                    </li>
-                    <li>
-                      <a href="/BEL">Belgium</a>
-                    </li>
-                    <li>
-                      <a href="/DEU">Germany</a>
-                    </li>
-                    <li>
-                      <a href="/ITA">Italy</a>
-                    </li>
-                    <li>
-                      <a href="/LUX">Luxembourg</a>
-                    </li>
-                    <li>
-                      <a href="/MCO">Monaco</a>
-                    </li>
-                    <li>
-                      <a href="/ESP">Spain</a>
-                    </li>
-                    <li>
-                      <a href="/CHE">Switzerland</a>
-                    </li>
+                    {countrie.borders.map(item => (
+                      <li>
+                        <Link to={`/${item}`}> {this.convertToCountry(countrie)} </Link>
+                      </li>
+                    ))}
                   </ul>
                 </td>
               </tr>
