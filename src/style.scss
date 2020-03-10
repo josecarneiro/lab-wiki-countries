@@ -1,0 +1,19 @@
+.listCountries {
+    margin-top: 100px;
+    width: 500px;
+    max-height: 800px;
+    text-align: center;
+    overflow: scroll;
+}
+
+.listDetail {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.detailcountry {
+    width: 18rem;
+    padding: 20px;
+    text-align: center;    
+}
