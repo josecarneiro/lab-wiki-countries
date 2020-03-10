@@ -1,54 +1,71 @@
 import React, { Component } from 'react';
-import Data from '../countries.json';
+import { ListGroup } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import countries from './../countries.json';
 
 class CountryDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      capital: '',
-      area: '',
-      borders: []
+      country: null
     };
-    this.fetchData = this.fetchData.bind(this);
   }
 
   componentDidMount() {
     this.fetchData();
   }
 
-  fetchData() {
-    const theCountry = this.props.match.params.country;
-    Data.map(country => {
-      if (country.cca3 === theCountry) {
-        this.setState({
-          name: country.name.common,
-          capital: country.capital,
-          area: country.area,
-          borders: country.borders
-        });
-      }
-    });
-  }
-
-  convertToCountry(convert) {
-    const country = Data.find(country => country.cca3 === convert);
-    if (!country) return;
-    return country.name.common;
-  }
-
-  componentDidUpdate(previousProp, previousState) {
-    const previousParam = previousProp.match.params.country;
-    const presentParam = this.props.match.params.country;
-    if (presentParam !== previousParam) {
+  componentDidUpdate(previousProps, previousState) {
+    const countryChanged = previousProps.match.params.cca3 !== this.props.match.params.cca3;
+    if (countryChanged) {
       this.fetchData();
     }
   }
+
+  fetchData() {
+    const selected = this.props.match.params.cca3;
+    const country = countries.find(item => item.cca3 === selected);
+    this.setState({
+      country
+    });
+  }
   render() {
+    const country = this.state.country;
+
     return (
-      <div>
-        <h1>{this.state.name}</h1>
-      </div>
+      country && (
+        <div className="col-7">
+          <h1>{country.name.common}</h1>
+          <table className="table">
+            <thead></thead>
+            <tbody>
+              <tr>
+                <td style={{ width: '30%' }}>Capital</td>
+                <td>{country.capital}</td>
+              </tr>
+              <tr>
+                <td>Area</td>
+                <td>
+                  {country.area} km
+                  <sup>2</sup>
+                </td>
+              </tr>
+              <tr>
+                <td>Borders</td>
+                <td>
+                  <ListGroup variant="flush">
+                    {country.borders.map(item => (
+                      <Link to={`/${item}`}>
+                        <ListGroup.Item>{item}</ListGroup.Item>
+                      </Link>
+                    ))}
+                  </ListGroup>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      )
     );
   }
 }
