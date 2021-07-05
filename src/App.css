@@ -1,3 +1,16 @@
 .App p {
   text-align: center;
 }
+
+.padding {
+  padding: 0 50px;
+}
+
+.col-4 {
+  position: fixed !important;
+  right: 0 !important;
+}
+
+.col-8 {
+  margin-left: 0 !important;
+}
